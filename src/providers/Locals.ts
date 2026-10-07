@@ -33,6 +33,8 @@ class Locals {
 		const isCORSEnabled = process.env.CORS_ENABLED || true;
 		const jwtExpiresIn = process.env.JWT_EXPIRES_IN || 3;
 		const apiPrefix = process.env.API_PREFIX || 'api';
+		const environment = process.env.NODE_ENV || 'development';
+		const isProduction = environment === 'production';
 
 		const logDays = process.env.LOG_DAYS || 10;
 
@@ -50,7 +52,9 @@ class Locals {
 			company,
 			copyright,
 			description,
+			environment,
 			isCORSEnabled,
+			isProduction,
 			jwtExpiresIn,
 			keywords,
 			logDays,
