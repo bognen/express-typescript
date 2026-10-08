@@ -14,6 +14,7 @@ import { Database } from './Database';
 import Queue from './Queue';
 import Locals from './Locals';
 import Log from '../middlewares/Log';
+import ConfigAudit from '../jobs/ConfigAudit';
 
 class App {
 	// Clear the console
@@ -49,6 +50,8 @@ class App {
 	// Loads the Worker Cluster
 	public loadWorker (): void {
 		Log.info('Worker :: Booting @ Master...');
+
+		ConfigAudit.schedule();
 	}
 
 	// Loads the Queue Monitor
