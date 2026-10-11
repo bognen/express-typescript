@@ -81,7 +81,7 @@ class Log {
 	 * Note: 'X' is defined in .env file
 	 */
 	public clean (): void {
-		//
+		// Not implemented yet: retention cleanup of old log files.
 	}
 }
 
