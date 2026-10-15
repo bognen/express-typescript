@@ -6,6 +6,7 @@
 #  - Checks out the PR BASE commit and never executes code from the PR head.
 #  - Fork and Dependabot pull requests have no access to secrets: the runner skips the
 #    review there and prints a notice in the job summary (the check passes, PR unreviewed).
+#  - The install PR itself is skipped the same way: its base commit has no runner yet.
 #  - Replace the runner step with the commented action once it is published:
 #      # uses: devdigest/review-action@v1
 name: DevDigest review (performance-reviewer)
@@ -44,7 +45,14 @@ jobs:
           node-version: "22"
 
       - name: Run DevDigest review agent
-        run: node .devdigest/agents/performance-reviewer/runner/index.js
+        run: |
+          if [ ! -f ".devdigest/agents/performance-reviewer/runner/index.js" ]; then
+            msg="DevDigest agent performance-reviewer is not on the base branch yet (this is its install PR); review skipped."
+            echo "::notice::$msg"
+            echo "$msg" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          node .devdigest/agents/performance-reviewer/runner/index.js
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
